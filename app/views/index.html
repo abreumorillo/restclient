@@ -1,0 +1,95 @@
+<!-- Content Header (Page header) -->
+<!-- <section class="content-header">
+    <h1><i class="fa fa-search"></i> Search for Health care providers<small></small></h1>
+</section> -->
+<!-- Main content -->
+<section class="content">
+    <br>
+    <!-- Your Page Content Here -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-search text-primary"></i> Search the directory</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form name="searchForm" role="form" novalidate="">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="type">Organization Type</label>
+                                        <select class="form-control" id="type" name="type" ng-model="vm.organization.type" ng-options="org.typeId as org.type for org in vm.organizationType">
+                                            <option selected="" value="" disabled="">Select organization</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="name">Organization Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" ng-model="vm.organization.name" placeholder="Organization name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="type">State</label>
+                                        <select class="form-control" id="state" name="state" ng-model="vm.organization.state" ng-options="state.State as state.State for state in vm.states" ng-change="vm.getCitiesByState(vm.organization.state)">
+                                            <option selected="" value="" disabled="">Select the state</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="type">City</label>
+                                        <select class="form-control" id="city" name="city" ng-model="vm.organization.city" ng-options="city.city as city.city for city in vm.cities">
+                                            <option selected="" value="" disabled="">Select the city</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="name">Country</label>
+                                        <input type="text" class="form-control" id="country" name="country" ng-model="vm.organization.country" placeholder="Country">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="name">Zip Code</label>
+                                        <input type="text" class="form-control" id="zip" name="zip" ng-model="vm.organization.zip" placeholder="Zip Code">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-sm-2 col-sm-offset-4">
+                                    <button type="button" class="btn btn-success btn-block btn-lg" ng-click="vm.search()"><i class="fa fa-search"></i> Search</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="reset" class="btn btn-warning btn-block btn-lg" ng-click="vm.clearForm(searchForm)" ng-disabled="searchForm.$pristine"><i class="fa fa-refresh"></i> Reset Form</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- ./box-body -->
+                <!-- Loading (remove the following to stop the loading)-->
+                <div class="overlay" ng-if="vm.isSearching">
+                    <i class="fa fa-refresh fa-spin text-blue loading-indicator" ></i>
+                </div>
+                <!-- end loading -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+</section>
+<!-- /.content -->
