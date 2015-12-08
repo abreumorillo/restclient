@@ -5,14 +5,15 @@
         .module('myApp')
         .factory('OrganizationService', OrganizationService);
 
-    OrganizationService.$inject = ['$http', '$q', 'appConfig'];
+    OrganizationService.$inject = ['$http', '$q', 'appConfig', 'CommonService'];
 
     /* @ngInject */
-    function OrganizationService($http, $q, appConfig) {
+    function OrganizationService($http, $q, appConfig, CommonService) {
         var service = {
                 getOrganizationType: _getOrganizationType,
                 getCitiesByState: _getCitiesByState,
-                getStates: _getStates
+                getStates: _getStates,
+                searchOrganization: _searchOrganization
             },
             url = appConfig.serviceUrl;
         return service;
@@ -32,7 +33,7 @@
                 responseType: 'document'
             }).success(function(data, status) {
 
-                var result = parseXml(data, true);
+                var result = CommonService.parseXml(data, true);
                 deferred.resolve({
                     data: result,
                     status: status
@@ -59,7 +60,7 @@
                 },
                 responseType: 'document'
             }).success(function(data, status) {
-                var result = parseXml(data, true);
+                var result = CommonService.parseXml(data, true);
                 deferred.resolve({
                     data: result,
                     status: status
@@ -74,46 +75,60 @@
             return deferred.promise;
         }
 
-        function _getStates () {
+        function _getStates() {
             var deferred = $q.defer();
 
             $http({
                 method: 'GET',
                 url: url,
-                params: {path: '/States'},
+                params: {
+                    path: '/States'
+                },
                 responseType: 'document'
-            }).success(function  (data, status) {
-                var result = parseXml(data, true);
-                deferred.resolve({data: result, status: status});
-            }).error(function  (error, status) {
-                deferred.reject({error: error, status: status});
+            }).success(function(data, status) {
+                var result = CommonService.parseXml(data, true);
+                deferred.resolve({
+                    data: result,
+                    status: status
+                });
+            }).error(function(error, status) {
+                deferred.reject({
+                    error: error,
+                    status: status
+                });
             });
 
             return deferred.promise;
         }
 
-        function parseXml(xmlDoc, isArray) {
+        function _searchOrganization(searchCriteria) {
 
-            var row = xmlDoc.getElementsByTagName("row");
-            var result = [];
-            for (var i = 0; i < row.length; i++) {
-                var obj = {};
-                var attrLength = row[i].childNodes.length;
-                for (var j = 0; j < attrLength; j++) {
-                    var attrName = row[i].childNodes[j].nodeName;
-                    var attrValue = row[i].childNodes[j].textContent;
-
-                    if (isNaN(attrValue)) {
-                        obj[attrName] = attrValue;
-                    } else {
-                        obj[attrName] = parseInt(attrValue);
-                    }
-
-                }
-                result.push(obj);
-            }
-            return result;
+            var deferred = $q.defer();
+            var query = CommonService.buildQuery(searchCriteria);
+            $http({
+                method: 'GET',
+                url: url,
+                params: {
+                    path: "/Organizations?" + query
+                },
+                responseType: 'document'
+            }).success(function(data, status) {
+                //var result = CommonService.parseXml(data, true);
+                var result = CommonService.xmlToJson(data);
+                console.log(result);
+                deferred.resolve({
+                    data: result.data.row,
+                    status: status
+                });
+            }).error(function(error, status) {
+                deferred.reject({
+                    error: error,
+                    status: status
+                });
+            });
+            return deferred.promise;
         }
+
     }
 })();
 

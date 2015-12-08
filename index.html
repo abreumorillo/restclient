@@ -24,6 +24,7 @@
   -->
     <link rel="stylesheet" href="css/nga.all.min.css">
     <link rel="stylesheet" href="css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
     <link rel="stylesheet" href="css/app.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -110,13 +111,21 @@ desired effect
     <script src="js/angular-ui-router.min.js"></script>
     <script src="js/angular-aria.min.js"></script>
     <script src="js/angular-toastr.tpls.min.js"></script>
-
+    <script src="js/ui-bootstrap-custom-0.14.3.min.js"></script>
+    <script src="js/ui-bootstrap-custom-tpls-0.14.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>
     <!-- Custom application scripts -->
     <script src="app/app.module.js"></script>
     <script src="app/app.config.js"></script>
     <script src="app/app.route.js"></script>
+
     <!-- Services -->
+    <script src="app/services/common.service.js"></script>
     <script src="app/services/organization.service.js"></script>
+    <script src="app/services/sorting.service.js"></script>
+    <script src="app/services/organization-detail.service.js"></script>
+    <!-- directives -->
+    <script src="app/directives/sort-order.directive.js"></script>
     <!-- Controllers -->
     <script src="app/controllers/index.controller.js"></script>
     <script src="app/controllers/organization.controller.js"></script>

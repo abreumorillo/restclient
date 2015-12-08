@@ -1,0 +1,7 @@
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs ui-sortable-handle" ng-transclude></ul>
+    <div class="tab-content">
+        <div class="tab-pane" ng-repeat="tab in tabs" ng-class="{active: tab.active}" data-uib-tab-content-transclude="tab">
+        </div>
+    </div>
+</div>

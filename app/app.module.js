@@ -9,7 +9,10 @@
             'ngTouch',
             'ngAria',
             'ngSanitize',
-            'toastr'
+            'toastr',
+            'ui.bootstrap.pagination',
+            'ui.bootstrap.tabs',
+            'ngMaterial'
         ])
         .config(['$compileProvider', function($compileProvider) {
             $compileProvider.debugInfoEnabled(false); //Call this method to enable/disable various debug runtime information in the compiler such as adding binding information and a reference to the current scope on to DOM elements.

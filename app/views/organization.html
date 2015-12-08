@@ -1,10 +1,18 @@
-<!-- Content Header (Page header) -->
-<!-- <section class="content-header">
-    <h1><i class="fa fa-info-circle"></i> Organization information</h1>
-</section> -->
 <!-- Main content -->
 <section class="content">
+    <br>
     <!-- Your Page Content Here -->
-    <h1>Content goes here</h1>
+    <div class="col-sm-12">
+        <md-content class="md-padding">
+            <md-tabs md-selected="vm.selectedIndex" md-border-bottom md-autoselect ng-click="vm.onTabClicked()">
+                <md-tab ng-repeat="tab in vm.tabs" ng-disabled="tab.disabled" label="{{tab.Tab}}" >
+                    <div class="tab{{$index%4}}" style="padding: 25px; text-align: center;">
+                        <div>{{tab.content}}</div>
+                        <br/>
+                    </div>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </div>
 </section>
 <!-- /.content -->

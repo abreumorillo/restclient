@@ -10,21 +10,23 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-search text-primary"></i> Search the directory</h3>
+                    <h3 class="box-title box-title-large" ng-if="!vm.isSearchResult"><i class="fa fa-h-square fa-lg text-primary icon-middle"></i> Search the directory</h3>
+                    <h3 class="box-title box-title-large" ng-if="vm.isSearchResult"><i class="fa fa-th-list fa-lg text-primary icon-middle"></i> Showing Result</h3>
                     <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        <span class="nga-slow nga-slide-left text-primary" ng-if="!vm.isShowSearch">Click the button to expand search</span>
+                        <button type="button" class="btn btn-box-tool" ng-click="vm.showSearch()"><i class="fa fa-minus text-primary fa-lg"></i>
                         </button>
                     </div>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body nga-default nga-collapse" ng-if="!!vm.isShowSearch">
                     <form name="searchForm" role="form" novalidate="">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="type">Organization Type</label>
-                                        <select class="form-control" id="type" name="type" ng-model="vm.organization.type" ng-options="org.typeId as org.type for org in vm.organizationType">
+                                        <select class="form-control" id="type" name="type" ng-model="vm.organization.type" ng-options="org.type as org.type for org in vm.organizationType">
                                             <option selected="" value="" disabled="">Select organization</option>
                                         </select>
                                     </div>
@@ -33,11 +35,12 @@
                                     <div class="form-group">
                                         <label for="name">Organization Name</label>
                                         <input type="text" class="form-control" id="name" name="name" ng-model="vm.organization.name" placeholder="Organization name">
+                                        <small class="help-block text-muted nga-default nga-stagger-slow nga-fade" ng-if="!vm.organization.name">Can be partial - "vol" for "volunteer"</small>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="type">State</label>
+                                        <label for="state">State</label>
                                         <select class="form-control" id="state" name="state" ng-model="vm.organization.state" ng-options="state.State as state.State for state in vm.states" ng-change="vm.getCitiesByState(vm.organization.state)">
                                             <option selected="" value="" disabled="">Select the state</option>
                                         </select>
@@ -47,7 +50,7 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="type">City</label>
+                                        <label for="city">City</label>
                                         <select class="form-control" id="city" name="city" ng-model="vm.organization.city" ng-options="city.city as city.city for city in vm.cities">
                                             <option selected="" value="" disabled="">Select the city</option>
                                         </select>
@@ -55,13 +58,13 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="name">Country</label>
-                                        <input type="text" class="form-control" id="country" name="country" ng-model="vm.organization.country" placeholder="Country">
+                                        <label for="county">County</label>
+                                        <input type="text" class="form-control" id="county" name="county" ng-model="vm.organization.county" placeholder="County" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="name">Zip Code</label>
+                                        <label for="zip">Zip Code</label>
                                         <input type="text" class="form-control" id="zip" name="zip" ng-model="vm.organization.zip" placeholder="Zip Code">
                                     </div>
                                 </div>
@@ -71,7 +74,9 @@
                         <div class="box-footer">
                             <div class="row">
                                 <div class="col-sm-2 col-sm-offset-4">
-                                    <button type="button" class="btn btn-success btn-block btn-lg" ng-click="vm.search()"><i class="fa fa-search"></i> Search</button>
+                                    <button type="button" class="btn btn-success btn-block btn-lg" ng-click="vm.search()">
+                                        <i class="fa fa-search fa-lg"></i> Search
+                                    </button>
                                 </div>
                                 <div class="col-sm-2">
                                     <button type="reset" class="btn btn-warning btn-block btn-lg" ng-click="vm.clearForm(searchForm)" ng-disabled="searchForm.$pristine"><i class="fa fa-refresh"></i> Reset Form</button>
@@ -83,7 +88,7 @@
                 <!-- ./box-body -->
                 <!-- Loading (remove the following to stop the loading)-->
                 <div class="overlay" ng-if="vm.isSearching">
-                    <i class="fa fa-refresh fa-spin text-blue loading-indicator" ></i>
+                    <i class="fa fa-refresh fa-spin text-blue loading-indicator"></i>
                 </div>
                 <!-- end loading -->
             </div>
@@ -91,5 +96,67 @@
         </div>
         <!-- /.col -->
     </div>
+    <!-- Result table -->
+    <div class="row vm.isSearchResult" ng-if="vm.isSearchResult">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!--                 <div class="box-header">
+                    <h3 class="box-title">Result <span class="label label-success" ng-bind="vm.organizations.length"></span></h3>
+                </div> -->
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th ng-click="vm.sortByField('type')"> Type
+                                    <pt-sort-order sorting-option="vm.sortingOption" sorting-by="type"></pt-sort-order>
+                                </th>
+                                <th ng-click="vm.sortByField('Name')"> Name
+                                    <pt-sort-order sorting-option="vm.sortingOption" sorting-by="Name"></pt-sort-order>
+                                </th>
+                                <th ng-click="vm.sortByField('city')"> City
+                                    <pt-sort-order sorting-option="vm.sortingOption" sorting-by="city"></pt-sort-order>
+                                </th>
+                                <th ng-click="vm.sortByField('zip')"> Zip
+                                    <pt-sort-order sorting-option="vm.sortingOption" sorting-by="zip"></pt-sort-order>
+                                </th>
+                                <th ng-click="vm.sortByField('CountyName')"> County
+                                    <pt-sort-order sorting-option="vm.sortingOption" sorting-by="CountyName"></pt-sort-order>
+                                </th>
+                                <th ng-click="vm.sortByField('State')"> State
+                                    <pt-sort-order sorting-option="vm.sortingOption" sorting-by="State"></pt-sort-order>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="organization in vm.organizations | filter : vm.paginate" class="nga-default nga-stagger-slow nga-slide-up" ng-click="vm.getOrganizationDetails(organization.OrganizationID)">
+                                <td>{{organization.type}}</td>
+                                <td>{{organization.Name}}</td>
+                                <td>{{organization.city}}</td>
+                                <td>{{organization.zip}}</td>
+                                <td>{{organization.CountyName}}</td>
+                                <td>{{organization.State}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- Loading (remove the following to stop the loading)-->
+                    <div class="overlay" ng-if="vm.isPaging">
+                        <i class="fa fa-spinner fa-spin text-green loading-indicator"></i>
+                    </div>
+                    <!-- end loading -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer" ng-if="vm.totalItems > vm.itemPerPage">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div data-pagination="" data-total-items="vm.totalItems" data-ng-change="vm.pageChanged()" data-ng-model="vm.currentPage" data-items-per-page="vm.itemPerPage" class="pagination-sm" boundary-links="true"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    <!-- ./Result table -->
 </section>
 <!-- /.content -->

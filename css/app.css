@@ -101,3 +101,11 @@ textarea:focus:-ms-input-placeholder {
 .loading-indicator {
     font-size: 4em !important;
 }
+
+.icon-middle {
+    vertical-align: middle;
+}
+
+.box-title-large {
+    font-size: 2em!important;
+}
