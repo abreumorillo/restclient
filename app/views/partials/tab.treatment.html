@@ -1,0 +1,39 @@
+<br>
+<div class="row" ng-if="vm.tabData.count <=0 || !vm.tabData">
+    <div class="col-xs-8 col-xs-offset-2">
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-warning"></i> Info!</h4> There is no treatment registered.
+        </div>
+    </div>
+</div>
+<div class="row" ng-if="vm.tabData.count>0">
+    <div class="col-xs-8 col-xs-offset-2">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-bullseye text-blue"></i> Treatment information</h3>
+            </div>
+            <div class="box-body no-padding">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <th>Abbreviation</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Multiple elements -->
+                        <tr ng-if="vm.tabData.count > 0" ng-repeat="treatment in vm.tabData.treatment">
+                            <td class="text-left">{{treatment.abbreviation}}</td>
+                            <td class="text-left">{{treatment.type}}</td>
+                        </tr>
+                        <tr ng-if="vm.tabData.count === 1">
+                            <td class="text-left">{{vm.tabData.treatment.abbreviation}}</td>
+                            <td class="text-left">{{vm.tabData.treatment.type}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,7 @@
+/**
+ * This controller handle the search funtionality for the application.
+ * @author Neris S. Abreu.
+ */
 (function() {
     'use strict';
 
@@ -5,21 +9,23 @@
         .module('myApp')
         .controller('IndexController', IndexController);
 
-    IndexController.$inject = ['$q', 'OrganizationService', '$timeout', 'toastr', 'SortingService', '$state'];
+    IndexController.$inject = ['$q', 'OrganizationService', '$timeout', 'toastr', 'SortingService', '$state', 'appConfig'];
 
     /* @ngInject */
-    function IndexController($q, OrganizationService, $timeout, toastr, SortingService, $state) {
+    function IndexController($q, OrganizationService, $timeout, toastr, SortingService, $state, appConfig) {
+
         var vm = this,
             predicate = 'type',
             reverse = true;
 
-        //\/\/\/\\/
+        //\/\/\/\\/ BINDABLE MEMBERS /\/\/\/\\/\
         vm.organization = {};
         vm.organizations = [];
         vm.isSearchResult = false;
         vm.isSearching = false;
         vm.isSuccessResponse = false;
         vm.isErrorResponse = false;
+        vm.isLoaded = false;
 
         vm.organizationType = [];
         vm.states = [];
@@ -47,6 +53,7 @@
         vm.paginate = paginate;
         vm.pageChanged = pageChanged;
         vm.isPaging = false;
+
         /***
          * Function execute every time we interact with the pagination control
          */
@@ -56,7 +63,10 @@
                 vm.isPaging = false;
             }, 600);
         }
-
+        /**
+         * Paginate the result of the query
+         * @param  {any} value
+         */
         function paginate(value) {
             var begin, end, index;
             begin = (vm.currentPage - 1) * vm.itemPerPage;
@@ -69,12 +79,17 @@
 
         ////////////////
 
+        /**
+         * Function run on controller activation
+         * @return {[type]} [description]
+         */
         function activate() {
             showLoadingIndicator();
-            //execute all promises
-            $q.all([getOrganizationType(), getStates()]).then(function() {
+            $q.all([OrganizationService.getOrganizationType(), OrganizationService.getStates()]).then(function(data) {
+                handleOrganizationType(data[0]);
+                handleState(data[1]);
                 hideLoadingIndicator();
-            });
+            }, handleErrorResponse);
         }
 
         /**
@@ -89,6 +104,7 @@
             vm.isSuccessResponse = false;
             vm.isErrorResponse = false;
             vm.isSearchResult = false;
+            vm.isLoaded = false;
         }
 
         /**
@@ -99,18 +115,18 @@
             vm.organizations = [];
             showLoadingIndicator();
             OrganizationService.searchOrganization(vm.organization).then(function(successResponse) {
-                if (successResponse.status === 200) {
-                    if (successResponse.data.length > 0) {
+                if (successResponse.status === appConfig.statusCode.HTTP_OK) {
+                    if (successResponse.data && successResponse.data.length > 0) {
                         var data = successResponse.data;
-                        vm.totalItems = successResponse.data.length;
-                        vm.organizations = successResponse.data;
+                        vm.totalItems = data.length;
+                        vm.organizations = data;
                         vm.isSearchResult = true;
                         vm.isShowSearch = false;
                     } else {
                         vm.isSearchResult = false;
                         vm.isShowSearch = true;
                     }
-
+                    vm.isLoaded = true;
                 }
                 hideLoadingIndicator();
             }, handleErrorResponse);
@@ -118,28 +134,24 @@
 
         /**
          * Get organization type
+         * @param {object} response object containing the $http response
          * @return {array}
          */
-        function getOrganizationType() {
-
-            OrganizationService.getOrganizationType().then(function(successResponse) {
-                if (successResponse.status === 200) {
-                    vm.organizationType = successResponse.data;
-                }
-            }, handleErrorResponse);
-
+        function handleOrganizationType(response) {
+            if (response.status === appConfig.statusCode.HTTP_OK) {
+                vm.organizationType = response.data;
+            }
         }
 
         /**
          * Get the list of state
+         * @param {object} response $http response object
          * @return {array}
          */
-        function getStates() {
-            OrganizationService.getStates().then(function(successResponse) {
-                if (successResponse.status === 200) {
-                    vm.states = successResponse.data;
-                }
-            }, handleErrorResponse);
+        function handleState(response) {
+            if (response.status === appConfig.statusCode.HTTP_OK) {
+                vm.states = response.data;
+            }
         }
 
         /**

@@ -18,7 +18,6 @@
 
         ////////////////
 
-
         function _parseXml(xmlDoc, isArray) {
 
             var row = xmlDoc.getElementsByTagName("row");

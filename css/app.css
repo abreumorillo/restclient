@@ -109,3 +109,6 @@ textarea:focus:-ms-input-placeholder {
 .box-title-large {
     font-size: 2em!important;
 }
+.tab-close-btn {
+    margin: 3px;
+}

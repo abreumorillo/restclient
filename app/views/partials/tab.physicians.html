@@ -1,0 +1,47 @@
+<!-- No information -->
+<div class="row" ng-if="vm.tabData.count <=0">
+    <div class="col-xs-8 col-xs-offset-2">
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-warning"></i> Info!</h4> There is no physicians registered.
+        </div>
+    </div>
+</div>
+<!-- ./ No information -->
+<div class="row" ng-if="vm.tabData.count>0">
+    <div class="col-xs-8 col-xs-offset-2">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-user-md text-blue"></i> Physicians information</h3>
+            </div>
+            <div class="box-body no-padding">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <th>Last name</th>
+                            <th>First name</th>
+                            <th>License</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Multiple -->
+                        <tr ng-if="vm.tabData.count > 1" ng-repeat="physician in vm.tabData.physician | limitTo:10" class="nga-default nga-stagger-slow nga-slide-up">
+                            <td class="text-left">{{physician.lName}}</td>
+                            <td class="text-left">{{physician.fName}}</td>
+                            <td class="text-left">{{physician.license}}</td>
+                            <td class="text-left">{{physician.phone}}</td>
+                        </tr>
+                        <!-- One object -->
+                        <tr ng-if="vm.tabData.count === 1" ng-repeat="physician in vm.tabData.physician | limitTo:10">
+                            <td class="text-left">{{vm.tabData.physician.lName}}</td>
+                            <td class="text-left">{{vm.tabData.physician.fName}}</td>
+                            <td class="text-left">{{vm.tabData.physician.license}}</td>
+                            <td class="text-left">{{vm.tabData.physician.phone}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

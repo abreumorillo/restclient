@@ -18,7 +18,7 @@
         var directive = {
             replace: true, //replace the content of the custom widget with the HTML markup
             restrict: 'AE',
-            templateUrl: '/app/directives/templates/sort-order.html',
+            templateUrl: 'app/directives/templates/sort-order.html',
             scope: {
                 sortingOption: '=',
                 sortingBy: '@'

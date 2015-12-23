@@ -1,0 +1,30 @@
+<br>
+<div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-info-circle text-blue"></i> General information</h3>
+            </div>
+            <div class="box-body no-padding">
+                <table class="table table-responsive">
+                    <tr>
+                        <th width="25%"><i class="fa fa-info-circle text-blue"></i> Name</th>
+                        <td>{{vm.tabData.name !== 'null' ? vm.tabData.name : 'N/A';}} </td>
+                    </tr>
+                    <tr>
+                        <th><i class="fa fa-envelope text-blue"></i> Email</th>
+                        <td>{{vm.tabData.email}}</td>
+                    </tr>
+                    <tr>
+                        <th><i class="fa fa-link text-blue"></i> Website</th>
+                        <td>{{vm.tabData.website !== 'null' ? vm.tabData.website : 'N/A';}} </td>
+                    </tr>
+                    <tr>
+                        <th><i class="fa fa-list-alt text-blue"></i> Description</th>
+                        <td class="text-justify"> {{vm.tabData.description !== 'null' ? vm.tabData.description : 'N/A';}} </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

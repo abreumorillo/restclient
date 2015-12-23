@@ -32,14 +32,12 @@
                 },
                 responseType: 'document'
             }).success(function(data, status) {
-
                 var result = CommonService.parseXml(data, true);
                 deferred.resolve({
                     data: result,
                     status: status
                 });
             }).error(function(error, status) {
-                console.log(error, status);
                 deferred.reject({
                     error: error,
                     status: status
@@ -115,7 +113,6 @@
             }).success(function(data, status) {
                 //var result = CommonService.parseXml(data, true);
                 var result = CommonService.xmlToJson(data);
-                console.log(result);
                 deferred.resolve({
                     data: result.data.row,
                     status: status
